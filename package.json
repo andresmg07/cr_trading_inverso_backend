@@ -1,0 +1,19 @@
+{
+  "name": "cr_trading_inverso",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/andresmg07/cr_trading_inverso_backend.git"
+  },
+  "author": "Andres Montero Gamboa",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/andresmg07/cr_trading_inverso_backend/issues"
+  },
+  "homepage": "https://github.com/andresmg07/cr_trading_inverso_backend#readme"
+}

@@ -38,12 +38,12 @@ module.exports = {
              LIMIT ${limit} OFFSET ${range};`
 
         const [rows] = await pool.query(statement);
-        console.log(rows)
+        return rows
     },
 
     getInstrumentDetail: async (isin) => {
         const statement = `SELECT * FROM CR_TRADING_SESSION_DATA.INSTRUMENT_DATA WHERE ISIN='${isin}'`
         const [rows] = await pool.query(statement);
-        console.log(rows)
+        return rows
     }
 }

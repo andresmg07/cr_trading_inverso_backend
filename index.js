@@ -1,10 +1,13 @@
 const Express = require('express');
-const {connectMySQL} = require("./db/connection");
+const {getInstruments, getInstrumentDetail} = require('./db/queries/instrument')
 
 const index = async () => {
     const app = Express();
     app.use(Express.json());
-    const  connection = await connectMySQL()
+    // await getInstruments(0,10, true, 'rate')
+    await getInstrumentDetail('CRFCREDB0108')
+
+
 }
 
 index();

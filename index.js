@@ -1,14 +1,12 @@
 const Express = require('express');
-const {getInstruments, getInstrumentDetail} = require('./db/queries/instrument')
-const {getInitialHistoricPricePoints,
-    getLastSessionActivityLevel,
-    getRangedHistoricData,
-    getLastYearsPriceYieldLimit} = require('./db/queries/historic')
+const instrumentRoutes = require('./routes/instrumentRoutes')
+const historicRoutes = require('./routes/historicRoutes')
+require('dotenv').config();
 
-const index = async () => {
-    const app = Express();
-    app.use(Express.json());
-    console.log(await getLastYearsPriceYieldLimit('USP3699PGJ05', 'high'))
-}
-
-index();
+const app = Express();
+app.use(Express.json());
+app.use('/instruments', instrumentRoutes)
+app.use('/historic', historicRoutes)
+app.listen(process.env.API_PORT, () => {
+    console.log('Server up on port: ' + process.env.API_PORT)
+})

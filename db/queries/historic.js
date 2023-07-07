@@ -46,28 +46,28 @@ module.exports = {
                 INNER JOIN CR_TRADING_SESSION_DATA.LEVEL_CATALOG LC ON H.${activityLevelColumn} = LC.LEVEL_ID
                 ORDER BY H.SESSION_DATE DESC LIMIT 1;`
             try{
-                resolve((await pool.query(statement))[0]);
+                resolve((await pool.query(statement))[0][0]['LEVEL']);
             }catch (e){
                 reject(e)
             }
         })
     },
 
-    getLastYearsPriceYieldLimits: async ({isin, boundary}) => {
+    getPriceYieldLimits: async ({isin, boundary, backInTimeFromNow}) => {
         return new Promise(async (resolve, reject) => {
             const tableName = isin.toUpperCase() + '_HISTORY'
             const orderType = boundary === 'upper' ? 'DESC' : 'ASC'
-            console.log(orderType)
             const statement = `
                 SELECT
                     SESSION_DATE,
                     VECTOR_PRICE,
                     VECTOR_YIELD
                 FROM CR_TRADING_SESSION_DATA.${tableName}
+                WHERE SESSION_DATE > '${backInTimeFromNow}'
                 ORDER BY VECTOR_PRICE ${orderType}
                 LIMIT 1;`
             try{
-                resolve((await pool.query(statement))[0]);
+                resolve((await pool.query(statement))[0][0]);
             }catch (e){
                 reject(e)
             }

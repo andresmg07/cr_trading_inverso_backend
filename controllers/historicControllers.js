@@ -1,7 +1,7 @@
 const {
     getInitialHistoricPricePoints,
     getRangedHistoricPricePoints,
-    getLastYearsPriceYieldLimits,
+    getPriceYieldLimits,
     getLastSessionActivityLevel} = require('../db/queries/historic')
 
 module.exports = {
@@ -34,34 +34,38 @@ module.exports = {
         })
     },
     getComplementaryHistory: (req, res) => {
-        const payload = req.params;
-        let lastSessionActivityLevel = ''
-        let lastYearsPriceYieldLimits = {}
-        getLastSessionActivityLevel(payload).then((activity) => {
-            console.log(activity)
-            lastSessionActivityLevel = activity
+        const lastSessionActivityPayload = {isin: req.params.isin};
+        const lastYearsLimitsPayload = req.params;
+        const longAgoDate = (new Date(new Date().setFullYear(new Date().getFullYear() - 10))).toISOString()
+        const absoluteLimitsPayload = {...req.params, backInTimeFromNow: longAgoDate};
+        getLastSessionActivityLevel(lastSessionActivityPayload).then((lastSessionActivityLevel) => {
+            getPriceYieldLimits(lastYearsLimitsPayload).then((lastYearsPriceYieldLimits) => {
+                getPriceYieldLimits(absoluteLimitsPayload).then((absolutePriceYieldLimits) => {
+                    return res.status(200).json({
+                        status:true,
+                        data: {
+                            lastSessionActivityLevel,
+                            lastYearsPriceYieldLimits,
+                            absolutePriceYieldLimits
+                        },
+                    })
+                }).catch((error) => {
+                    return res.status(500).json({
+                        status: false,
+                        error: error,
+                    });
+                })
+            }).catch((error) => {
+                return res.status(500).json({
+                    status: false,
+                    error: error,
+                });
+            })
         }).catch((error) => {
             return res.status(500).json({
                 status: false,
                 error: error,
             });
-        })
-        getLastYearsPriceYieldLimits(payload).then((limits) => {
-            lastYearsPriceYieldLimits = limits
-        }).catch((error) => {
-            return res.status(500).json({
-                status: false,
-                error: error,
-            });
-        })
-        console.log(lastSessionActivityLevel)
-
-        return res.status(200).json({
-            status:true,
-            data: {
-                lastSessionActivityLevel,
-                lastYearsPriceYieldLimits
-            },
         })
     },
 }

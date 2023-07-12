@@ -1,8 +1,10 @@
 const pool = require('../pool')
+const {dummyFeaturedInstruments} = require('../../dummyData/instrumentDummyData')
 
 module.exports = {
     getInstruments:  ({range, limit, retrieveAll, sortParam}) => {
         return new Promise(async (resolve, reject) => {
+            resolve(dummyFeaturedInstruments);
             const statement =
                 `SELECT
                 ID.ISIN,

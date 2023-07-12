@@ -18,12 +18,10 @@
   "homepage": "https://github.com/andresmg07/cr_trading_inverso_backend#readme",
   "dependencies": {
     "ajv": "^8.12.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
     "express": "^4.18.2",
     "jsonwebtoken": "^9.0.0",
-    "mysql2": "^3.4.0",
-    "dotenv": "^16.3.1"
-  },
-  "devDependencies": {
-
+    "mysql2": "^3.4.0"
   }
 }

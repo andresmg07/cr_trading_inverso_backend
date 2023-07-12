@@ -1,9 +1,11 @@
 const Express = require('express');
+const cors = require('cors')
 const instrumentRoutes = require('./routes/instrumentRoutes')
 const historicRoutes = require('./routes/historicRoutes')
 require('dotenv').config();
 
 const app = Express();
+app.use(cors());
 app.use(Express.json());
 app.use('/instruments', instrumentRoutes)
 app.use('/historic', historicRoutes)

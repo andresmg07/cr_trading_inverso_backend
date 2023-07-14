@@ -2,8 +2,8 @@ const router = require('express').Router();
 
 const instrumentController = require('../controllers/historicControllers')
 
-router.get('/:isin', instrumentController.getInitialHistoricPricePoints);
+router.get('/initial/:isin', instrumentController.getInitialHistoricPricePoints);
 router.get('/complementary/:isin/:boundary/:backInTimeFromNow', instrumentController.getComplementaryHistory);
-router.get('/:isin/:range/:limit/', instrumentController.getRangedHistoricPricePoints);
+router.get('/ranged/:isin/:range/:limit', instrumentController.getRangedHistoricPricePoints);
 
 module.exports  = router;

@@ -3,11 +3,11 @@ require('dotenv').config();
 
 try{
     module.exports = createPool({
-        host: process.env.DB_HOST,
-        port: process.env.DB_PORT,
-        user: process.env.DB_USER,
-        database: process.env.DB_DATABASE,
-        password: process.env.DB_PASSWORD,
+        host: process.env.REMOTE_DB_HOST,
+        port: process.env.REMOTE_DB_PORT,
+        user: process.env.REMOTE_DB_USER,
+        database: process.env.REMOTE_DB_DATABASE,
+        password: process.env.REMOTE_DB_PASSWORD,
         waitForConnections: true,
         enableKeepAlive: true,
         multipleStatements: true,

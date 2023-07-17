@@ -1,3 +1,4 @@
+const {getPriceYieldLimits} = require("../db/queries/historic");
 module.exports = {
     formatFeaturedInstruments: (response) => {
         return response.map((instrument) => {
@@ -33,8 +34,30 @@ module.exports = {
             approvedAmount:instrument.APPROVED_AMOUNT,
             placedAmount:instrument.PLACED_AMOUNT,
             lastSessionDate:instrument.LAST_SESSION_DATE,
-            firstSessionDate:instrument.FIRST_SESSION_DATE
+            firstSessionDate:instrument.FIRST_SESSION_DATE,
+            price:instrument.VECTOR_PRICE,
+            yield:instrument.VECTOR_YIELD
         })
 
     },
+
+    formatHistoricPricePoints: (response) => {
+        return response.map((point) => {
+            return {
+                sessionDate:point.SESSION_DATE,
+                price:point.VECTOR_PRICE,
+                yield:point.VECTOR_YIELD,
+            }
+        })
+    },
+
+    formatPriceYieldLimits: (response) => {
+        return(response.map(limitValues => {
+            return {
+                sessionDate:limitValues.SESSION_DATE,
+                price:limitValues.VECTOR_PRICE,
+                yield:limitValues.VECTOR_YIELD,
+            }
+        }))
+    }
 }

@@ -113,10 +113,13 @@ module.exports = {
                     ID.APPROVED_AMOUNT,
                     ID.PLACED_AMOUNT,
                     ID.LAST_SESSION_DATE,
-                    ID.FIRST_SESSION_DATE                    
+                    ID.FIRST_SESSION_DATE,
+                    LSIPY.VECTOR_PRICE,
+                    LSIPY.VECTOR_YIELD
                 FROM CR_TRADING_SESSION_DATA.INSTRUMENT_DATA ID
                         INNER JOIN CR_TRADING_SESSION_DATA.CURRENCY_CATALOG CC ON ID.CURRENCY = CC.CURRENCY_ID
                         INNER JOIN CR_TRADING_SESSION_DATA.ISSUER_COUNTRY_CATALOG ICC ON ID.ISSUER_COUNTRY = ICC.COUNTRY_CODE
+                        INNER JOIN CR_TRADING_SESSION_DATA.LAST_SESSION_INSTRUMENT_PRICE_YIELD LSIPY ON ID.ISIN = LSIPY.ISIN
                  WHERE ID.ISIN = '${isin}';`
             try{
                 resolve((await pool.query(statement))[0][0]);

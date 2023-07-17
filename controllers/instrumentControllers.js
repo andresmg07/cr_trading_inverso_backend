@@ -6,9 +6,7 @@ module.exports = {
         getInstruments(payload).then((instruments) => {
             return res.status(200).json(instruments)
         }).catch((error) => {
-            return res.status(500).json({
-                error: error,
-            });
+            return res.status(500).json({error});
         })
     },
     getFeaturedInstruments: (req, res) => {
@@ -16,21 +14,15 @@ module.exports = {
         getFeaturedInstruments(payload).then((instruments) => {
             return res.status(200).json(formatFeaturedInstruments(instruments))
         }).catch((error) => {
-            return res.status(500).json({
-                error: error,
-            });
+            return res.status(500).json({error});
         })
     },
     getInstrumentDetail: (req, res) => {
         const payload = req.params;
         getInstrumentDetail(payload).then((detail) => {
-            console.log(detail)
-            console.log(formatInstrumentDetail(detail))
             return res.status(200).json(formatInstrumentDetail(detail))
         }).catch((error) => {
-            return res.status(500).json({
-                error: error,
-            });
+            return res.status(500).json({error});
         })
     },
     instrumentSearchSuggestions: (req, res) => {
@@ -38,9 +30,7 @@ module.exports = {
         instrumentSearchSuggestions(payload).then((result) => {
             return res.status(200).json(result)
         }).catch((error) => {
-            return res.status(500).json({
-                error: error,
-            });
+            return res.status(500).json({error});
         })
     }
 }

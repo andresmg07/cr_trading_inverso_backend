@@ -1,7 +1,7 @@
 const pool = require('../pool')
 
 module.exports = {
-    getInitialHistoricPricePoints: async ({isin}) => {
+    getInitialHistoricPricePoints: async ({isin, initialTargetOffset}) => {
         return new Promise(async (resolve, reject) => {
             const tableName = isin.toUpperCase() + '_HISTORY'
             const statement = `
@@ -9,7 +9,9 @@ module.exports = {
                     SESSION_DATE,
                     VECTOR_PRICE,
                     VECTOR_YIELD
-                FROM CR_TRADING_SESSION_DATA.${tableName} ORDER BY SESSION_DATE DESC LIMIT 5;`
+                FROM CR_TRADING_SESSION_DATA.${tableName}
+                WHERE SESSION_DATE >= '${initialTargetOffset}'                
+                ORDER BY SESSION_DATE;`
             try{
                 resolve((await pool.query(statement))[0]);
             }catch (e){
@@ -18,7 +20,7 @@ module.exports = {
         })
     },
 
-    getRangedHistoricPricePoints: async ({isin, range, limit}) => {
+    getRangedHistoricPricePoints: async ({isin, targetLimitDate, currentLimitDate}) => {
         return new Promise(async (resolve, reject) => {
             const tableName = isin.toUpperCase() + '_HISTORY'
             const statement = `
@@ -26,7 +28,9 @@ module.exports = {
                     SESSION_DATE,
                     VECTOR_PRICE,
                     VECTOR_YIELD              
-                FROM CR_TRADING_SESSION_DATA.${tableName} ORDER BY SESSION_DATE DESC LIMIT ${limit} OFFSET ${range};`
+                FROM CR_TRADING_SESSION_DATA.${tableName}
+                WHERE '${targetLimitDate}' = 'max' OR (SESSION_DATE >= '${targetLimitDate}' AND SESSION_DATE < '${currentLimitDate}')
+                ORDER BY SESSION_DATE;`
             try{
                 resolve((await pool.query(statement))[0]);
             }catch (e){

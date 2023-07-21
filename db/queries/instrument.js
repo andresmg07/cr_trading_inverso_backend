@@ -137,6 +137,7 @@ module.exports = {
                     ID.INSTRUMENT_ISSUER,
                     ID.RATE,
                     ID.MATURITY,
+                    ID.IS_ACTIVE,
                     ICC.COUNTRY_NAME,
                     CC.CURRENCY_NAME
                 FROM CR_TRADING_SESSION_DATA.INSTRUMENT_DATA ID

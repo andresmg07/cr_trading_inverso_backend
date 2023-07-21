@@ -27,7 +27,7 @@ module.exports = {
             maturity:instrument.MATURITY,
             buyBack:instrument.BUY_BACK,
             country:instrument.COUNTRY_NAME,
-            isActive:instrument.IS_ACTIVE,
+            status:instrument.IS_ACTIVE,
             issuanceType:instrument.ISSUANCE_TYPE,
             official:instrument.OFFICIAL,
             currency:instrument.CURRENCY_NAME,
@@ -38,7 +38,20 @@ module.exports = {
             price:instrument.VECTOR_PRICE,
             yield:instrument.VECTOR_YIELD
         })
+    },
 
+    formatSearchSuggestions: (response) => {
+        return response.map((suggestion) => {
+            return ({
+                isin: suggestion.ISIN,
+                issuer: suggestion.INSTRUMENT_ISSUER,
+                rate: suggestion.RATE,
+                maturity: suggestion.MATURITY,
+                status: suggestion.IS_ACTIVE,
+                country: suggestion.COUNTRY_NAME,
+                currency: suggestion.CURRENCY_NAME
+            });
+        });
     },
 
     formatHistoricPricePoints: (response) => {

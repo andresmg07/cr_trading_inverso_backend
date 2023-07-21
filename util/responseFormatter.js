@@ -54,6 +54,23 @@ module.exports = {
         });
     },
 
+    formatInstrumentAllInstruments: (response) => {
+        return response.map((instrument) => {
+            return ({
+                isin:instrument.ISIN,
+                status:instrument.IS_ACTIVE,
+                issuer:instrument.INSTRUMENT_ISSUER,
+                rate:instrument.RATE,
+                maturity:instrument.MATURITY,
+                lastSessionDate:instrument.LAST_SESSION_DATE,
+                firstSessionDate:instrument.FIRST_SESSION_DATE,
+                country:instrument.COUNTRY_NAME,
+                currency:instrument.CURRENCY_NAME,
+                price:instrument.VECTOR_PRICE,
+            });
+        });
+    },
+
     formatHistoricPricePoints: (response) => {
         return response.map((point) => {
             return {

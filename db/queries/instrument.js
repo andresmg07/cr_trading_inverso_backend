@@ -1,7 +1,8 @@
 const pool = require('../pool')
 
 module.exports = {
-    getInstruments:  ({range, limit, retrieveAll, sortParam}) => {
+    getInstruments:  ({lastRetrievedIndex, limit, retrieveAll, searchTerm, sortParam, sortType}) => {
+        sortType = sortParam === 'null' ? 'DESC' : sortType
         return new Promise(async (resolve, reject) => {
             const statement =
                 `SELECT
@@ -11,7 +12,7 @@ module.exports = {
                 ID.RATE,
                 ID.MATURITY,
                 ID.LAST_SESSION_DATE,
-                ID.FIRST_SESSION_DATE,
+                ID.FIRST_SESSION_DATE,                
                 ICC.COUNTRY_NAME,
                 CC.CURRENCY_NAME,
                 LSIPY.VECTOR_PRICE                
@@ -19,25 +20,29 @@ module.exports = {
                 INNER JOIN CR_TRADING_SESSION_DATA.CURRENCY_CATALOG CC ON ID.CURRENCY = CC.CURRENCY_ID
                 INNER JOIN CR_TRADING_SESSION_DATA.ISSUER_COUNTRY_CATALOG ICC ON ID.ISSUER_COUNTRY = ICC.COUNTRY_CODE
                 INNER JOIN CR_TRADING_SESSION_DATA.LAST_SESSION_INSTRUMENT_PRICE_YIELD LSIPY ON ID.ISIN = LSIPY.ISIN
-             WHERE 
-                 (${retrieveAll} OR (ID.MATURITY > CURRENT_DATE() AND ID.IS_ACTIVE))                
-             ORDER BY
+            WHERE 
+                 (${retrieveAll} OR (ID.MATURITY > CURRENT_DATE() AND ID.IS_ACTIVE)) AND
+                 ('${searchTerm}' = 'null') OR (ID.ISIN LIKE '%${searchTerm}%' OR
+                                            ID.INSTRUMENT_ISSUER LIKE '%${searchTerm}%' OR
+                                            ICC.COUNTRY_NAME LIKE '%${searchTerm}%' OR
+                                            ID.ISSUER_COUNTRY LIKE '%${searchTerm}%')
+            ORDER BY                 
                  CASE
                      WHEN '${sortParam}' = 'maturity' THEN MATURITY
-                     END DESC,
+                     END ${sortType},
                  CASE
                      WHEN '${sortParam}' = 'rate' THEN RATE
-                     END DESC,
+                     END ${sortType},
                  CASE
                      WHEN '${sortParam}' = 'price' THEN VECTOR_PRICE
-                     END DESC,
+                     END ${sortType},
                  CASE
-                     WHEN '${sortParam}' = 'release' THEN FIRST_SESSION_DATE
-                     END DESC,                 
-                 CASE
-                     WHEN '${sortParam}' IS NULL THEN FIRST_SESSION_DATE
-                 END DESC
-             LIMIT ${limit} OFFSET ${range};`
+                     WHEN '${sortParam}' = 'release' THEN LAST_SESSION_DATE
+                     END ${sortType},
+                CASE
+                    WHEN '${sortParam}'  = 'null' THEN LAST_SESSION_DATE
+                    END DESC
+            LIMIT ${limit} OFFSET ${lastRetrievedIndex};`
             try{
                 resolve((await pool.query(statement))[0]);
             }catch (e){

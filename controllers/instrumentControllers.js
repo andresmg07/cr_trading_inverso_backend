@@ -1,10 +1,15 @@
 const {getInstruments, getInstrumentDetail, instrumentSearchSuggestions, getFeaturedInstruments} = require('../db/queries/instrument')
-const {formatFeaturedInstruments, formatInstrumentDetail, formatSearchSuggestions} = require('../util/responseFormatter')
+const {
+    formatFeaturedInstruments,
+    formatInstrumentDetail,
+    formatSearchSuggestions,
+    formatInstrumentAllInstruments} = require('../util/responseFormatter')
+
 module.exports = {
     getInstruments: (req, res) => {
         const payload = req.params;
         getInstruments(payload).then((instruments) => {
-            return res.status(200).json(instruments)
+            return res.status(200).json(formatInstrumentAllInstruments(instruments))
         }).catch((error) => {
             return res.status(500).json({error});
         })

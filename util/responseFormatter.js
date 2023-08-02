@@ -5,9 +5,9 @@ module.exports = {
             return {
                 isin:instrument.ISIN,
                 issuer:instrument.INSTRUMENT_ISSUER,
-                rate:instrument.RATE,
-                price:instrument.VECTOR_PRICE,
-                yield:instrument.VECTOR_YIELD,
+                rate:instrument.RATE === null ? 0 : instrument.RATE,
+                price:instrument.VECTOR_PRICE === null ? 0 : instrument.VECTOR_PRICE,
+                yield:instrument.VECTOR_YIELD === null ? 0 : instrument.VECTOR_YIELD,
                 maturity:instrument.MATURITY,
                 country:instrument.COUNTRY_NAME,
                 currency:instrument.CURRENCY_NAME,
@@ -35,8 +35,8 @@ module.exports = {
             placedAmount:instrument.PLACED_AMOUNT,
             lastSessionDate:instrument.LAST_SESSION_DATE,
             firstSessionDate:instrument.FIRST_SESSION_DATE,
-            price:instrument.VECTOR_PRICE,
-            yield:instrument.VECTOR_YIELD
+            price:instrument.VECTOR_PRICE === null ? 0 : instrument.VECTOR_PRICE,
+            yield:instrument.VECTOR_YIELD === null ? 0 : instrument.VECTOR_YIELD
         })
     },
 
@@ -45,7 +45,7 @@ module.exports = {
             return ({
                 isin: suggestion.ISIN,
                 issuer: suggestion.INSTRUMENT_ISSUER,
-                rate: suggestion.RATE,
+                rate:suggestion.RATE === null ? 0 : suggestion.RATE,
                 maturity: suggestion.MATURITY,
                 status: suggestion.IS_ACTIVE,
                 country: suggestion.COUNTRY_NAME,
@@ -60,13 +60,13 @@ module.exports = {
                 isin:instrument.ISIN,
                 status:instrument.IS_ACTIVE,
                 issuer:instrument.INSTRUMENT_ISSUER,
-                rate:instrument.RATE,
+                rate:instrument.RATE === null ? 0 : instrument.RATE,
                 maturity:instrument.MATURITY,
                 lastSessionDate:instrument.LAST_SESSION_DATE,
                 firstSessionDate:instrument.FIRST_SESSION_DATE,
                 country:instrument.COUNTRY_NAME,
                 currency:instrument.CURRENCY_NAME,
-                price:instrument.VECTOR_PRICE,
+                price:instrument.VECTOR_PRICE === null ? 0 : instrument.VECTOR_PRICE,
             });
         });
     },

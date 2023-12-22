@@ -139,7 +139,7 @@ module.exports = {
             const statement = `
                 SELECT
                     ID.ISIN,
-                    ID.INSTRUMENT_ISSUER,
+                     ID.INSTRUMENT_ISSUER,
                     ID.RATE,
                     ID.MATURITY,
                     ID.IS_ACTIVE,

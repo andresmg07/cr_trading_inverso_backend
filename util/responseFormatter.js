@@ -1,4 +1,3 @@
-const {getPriceYieldLimits} = require("../db/queries/historic");
 module.exports = {
     formatFeaturedInstruments: (response) => {
         return response.map((instrument) => {
